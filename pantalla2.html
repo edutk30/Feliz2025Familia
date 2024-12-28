@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>¡Descubre los Regalos!</title>
+    <link rel="stylesheet" href="pantalla2.css">
+</head>
+<body>
+    <h1>¡Haz clic en cada regalo, recuerda que cada mundo es diferente, mira el tuyo!!!!!</h1>
+
+    <div class="gifts-container" id="giftsContainer">
+        <!-- Los regalos se añadirán aquí por JavaScript -->
+    </div>
+
+    <!-- Modal para mostrar la imagen -->
+    <div id="imageModal" class="modal">
+        <span class="close" onclick="closeModal()">×</span>
+        <img class="modal-content" id="modalImage" />
+        <div id="caption"></div>
+    </div>
+
+    <script>
+        // Lista de las imágenes de los regalos
+        const regalos = [
+            { src: "imagenes/bautiza_vale.jpg", alt: "Regalo 1" },
+            { src: "imagenes/almuerzo_nanoymadre.jpg", alt: "Regalo 2" },
+            { src: "imagenes/b_nanoymadre.jpg", alt: "Regalo 3" },
+            { src: "imagenes/barranca_madre.jpg", alt: "Regalo 4" },
+            { src: "imagenes/bautizo_hamed.jpg", alt: "Regalo 5" },
+            { src: "imagenes/cena_despedida.jpg", alt: "Regalo 6" },
+            { src: "imagenes/cena_ramdon.jpg", alt: "Regalo 7" },
+            { src: "imagenes/cumples.jpg", alt: "Regalo 8" },
+            { src: "imagenes/despedida.jpg", alt: "Regalo 9" },
+            { src: "imagenes/despedidafam.jpg", alt: "Regalo 10" },
+            { src: "imagenes/edu.jpg", alt: "Regalo 11" },
+            { src: "imagenes/fotos_almerzo.jpg", alt: "Regalo 12" },
+            { src: "imagenes/gino.jpg", alt: "Regalo 13" },
+            { src: "imagenes/gino_comelo.jpg", alt: "Regalo 14" },
+            { src: "imagenes/gino_fam.jpg", alt: "Regalo 15" },
+            { src: "imagenes/ginooooo.jpg", alt: "Regalo 16" },
+            { src: "imagenes/hamed_gaseosa.jpg", alt: "Regalo 17" },
+            { src: "imagenes/madre_nietos.jpg", alt: "Regalo 18" },
+            { src: "imagenes/madre_oo.jpg", alt: "Regalo 19" },
+            { src: "imagenes/nano_gino.jpg", alt: "Regalo 20" },
+            { src: "imagenes/nanooo.jpg", alt: "Regalo 21" },
+            { src: "imagenes/nanoooooo.jpg", alt: "Regalo 22" },
+            { src: "imagenes/oxaa.jpg", alt: "Regalo 23" },
+            { src: "imagenes/oza.jpg", alt: "Regalo 24" },
+            { src: "imagenes/playa_barranco.jpg", alt: "Regalo 25" },
+            { src: "imagenes/primitos.jpg", alt: "Regalo 26" },
+            { src: "imagenes/regalo_jac.jpg", alt: "Regalo 27" },
+            { src: "imagenes/vale_comelon.jpeg", alt: "Regalo 28" },
+            { src: "imagenes/valeee.jpg", alt: "Regalo 29" },
+            { src: "imagenes/akil_mall.jpg", alt: "Regalo 30" },
+            { src: "imagenes/jackyakil_navidad.jpg", alt: "Regalo 31" }
+        ];
+
+        // Función para mezclar el array de regalos
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]]; // Intercambia los elementos
+            }
+        }
+
+        // Función para generar los regalos en el contenedor
+        function generateGifts() {
+            const giftsContainer = document.getElementById('giftsContainer');
+            shuffleArray(regalos); // Mezcla los regalos
+
+            regalos.forEach((regalo, index) => {
+                const giftDiv = document.createElement('div');
+                giftDiv.classList.add('gift');
+                giftDiv.id = `gift${index + 1}`;
+
+                const giftImg = document.createElement('img');
+                giftImg.src = "imagenes/regalo_icono.jpg"; // Esta es la imagen que se muestra antes de abrir el modal
+                giftImg.alt = regalo.alt;
+                giftImg.classList.add('gift-icon');
+                giftImg.setAttribute('data-image', regalo.src); // Ruta de la imagen que se muestra en el modal
+
+                giftDiv.appendChild(giftImg);
+                giftsContainer.appendChild(giftDiv);
+            });
+        }
+
+        // Función para abrir el modal con la imagen
+        function openModal(imageSrc) {
+            const modal = document.getElementById('imageModal');
+            const modalImage = document.getElementById('modalImage');
+            modal.style.display = "block";
+            modalImage.src = imageSrc;
+
+            // Agregar confeti al hacer clic en el regalo
+            confetti({
+                particleCount: 100, // Número de partículas
+                spread: 70, // Ángulo de dispersión
+                origin: { y: 0.6 } // Origen del confeti (puedes ajustarlo según necesites)
+            });
+        }
+
+        // Función para cerrar el modal
+        function closeModal() {
+            const modal = document.getElementById('imageModal');
+            modal.style.display = "none";
+        }
+
+        // Añadir el evento de clic a cada icono de regalo
+        function addClickEventToGifts() {
+            document.querySelectorAll('.gift-icon').forEach(icon => {
+                icon.addEventListener('click', function() {
+                    const imageSrc = this.getAttribute('data-image');
+                    openModal(imageSrc);
+                });
+            });
+        }
+
+        // Ejecutar la función para generar los regalos cuando la página cargue
+        window.onload = function() {
+            generateGifts();
+            addClickEventToGifts();
+        }
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.0/dist/confetti.browser.min.js"></script>
+
+</body>
+</html>
